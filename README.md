@@ -64,7 +64,8 @@ make lint
 - [x] ignore dir errors
 - [x] simple build task
 - [x] dir wildcards
-- [ ] difference between dirs/trees, implement dirs
+- [x] exclude part of paths
+- [x] custom edit command
 
 ## Pim Future
 
@@ -72,3 +73,4 @@ make lint
 - [ ] refact into src
 - [ ] output to json
 - [ ] deamon mode
+- [ ] menubar https://github.com/fyne-io/systray

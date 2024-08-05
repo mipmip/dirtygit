@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
-	//"fmt"
+//	"fmt"
 	"strings"
 	"path/filepath"
 	"path"
@@ -15,8 +15,19 @@ import (
 
 func skip(needle string, haystack []string) bool {
 	for _, f := range haystack {
-		if f == needle {
-			return true
+		//fmt.Println( f)
+		//FULL PATH COMPARISON
+		if(f[0:1]=="/"){
+			if f == needle {
+				return true
+			}
+
+		//PARTIAL PATH COMPARISON
+		} else{
+			if f == path.Base(needle) {
+				//fmt.Println( needle)
+				return true
+			}
 		}
 	}
 	return false
@@ -54,6 +65,7 @@ func walkone(ctx context.Context, dir string, config *Config, results chan strin
 			default:
 			}
 
+			//fmt.Println(path)
 			// process all the SkipThis rules first
 
 			if skip(path, config.ScanDirs.Exclude) {
@@ -94,7 +106,7 @@ func Walk(ctx context.Context, config *Config, results chan string, ignore_dir_e
 		globPath := config.ScanDirs.Include[j]
 
 		if(string(globPath[len(globPath)-1:]) == "*"){
-			log.Printf("GLOBPATH: %s", globPath)
+			//log.Printf("GLOBPATH: %s", globPath)
 			parent := filepath.Dir(globPath)
 			//log.Printf("PARENT: %s", parent)
 			//log.Printf("BASEGLOB: %s", path.Base(globPath))

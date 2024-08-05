@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strings"
 	"os/exec"
 	"sort"
 	"sync/atomic"
@@ -217,6 +218,10 @@ func (u *ui) nextView(g *gocui.Gui, v *gocui.View) error {
 	}
 }
 
+func (u *ui) openCommand(g *gocui.Gui, v *gocui.View) error {
+	return gocui.ErrQuit
+}
+
 func (u *ui) quit(g *gocui.Gui, v *gocui.View) error {
 	return gocui.ErrQuit
 }
@@ -257,7 +262,15 @@ func (u *ui) edit(g *gocui.Gui, v *gocui.View) error {
 	if currentRepo == "" {
 		return nil
 	}
-	cmd := exec.Command("code", currentRepo)
+
+	//fmt.Sprintln(u.config.EditCommand)
+
+	//cmd := exec.Command("code", currentRepo)
+	//cmdStr := u.config.EditCommand
+	cmdStr := strings.Replace(u.config.EditCommand, "%WORKING_DIRECTORY", currentRepo, -1)
+	args := strings.Fields(cmdStr)
+	//fmt.Println(cmdStr)
+	cmd := exec.Command(args[0], args[1:]...)
 	err := cmd.Run()
 	return err
 }

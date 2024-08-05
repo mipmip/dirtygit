@@ -34,6 +34,7 @@ type Config struct {
 		DirGlob  []string `yaml:"dirglob"`
 	} `yaml:"gitignore"`
 	FollowSymlinks bool `yaml:"followsymlinks"`
+	EditCommand string `yaml:"edit_command"`
 }
 
 func DumpConfig(config *Config) error {
