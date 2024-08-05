@@ -61,13 +61,14 @@ make lint
 
 ## Pim First
 
-- [ ] ignore dir errors
-- [ ] simple build task
-- [ ] flake
-- [ ] dir wildcards
+- [x] ignore dir errors
+- [x] simple build task
+- [x] dir wildcards
+- [ ] difference between dirs/trees, implement dirs
 
 ## Pim Future
 
+- [ ] flake
 - [ ] refact into src
 - [ ] output to json
 - [ ] deamon mode
