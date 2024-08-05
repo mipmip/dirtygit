@@ -58,3 +58,16 @@ make lint
 - Possibly show git diff
 - Allow deletion of files / repositories
 - Add tests!
+
+## Pim First
+
+- [ ] ignore dir errors
+- [ ] simple build task
+- [ ] flake
+- [ ] dir wildcards
+
+## Pim Future
+
+- [ ] refact into src
+- [ ] output to json
+- [ ] deamon mode
