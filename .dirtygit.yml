@@ -5,6 +5,14 @@ scandirs:
   # this will have env vars expanded
   include:
     - $HOME/apps
+    - $HOME/tc*
+    - $HOME/c*
+
+  # a list of one/more starting points
+  # this will have env vars expanded
+  include_dirs:
+    - $HOME/apps
+    - $HOME/tc*
 
   # a list of specific directories to exclude from the scan
   # this will have env vars expanded
@@ -18,6 +26,7 @@ scandirs:
 gitignore:
 
   fileglob:
+    - .terraform.lock.hcl
     - go.sum
     - log
     - "*.orig"
@@ -30,6 +39,7 @@ gitignore:
     - vendor
     - new
     - old
+    - .terraform
 
 # if true, walking the directory tree underneath the `include` directories
 # will traverse directories pointed to be symlinks

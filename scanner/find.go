@@ -4,7 +4,10 @@ import (
 	"context"
 	"log"
 	"os"
+	//"fmt"
+	"strings"
 	"path/filepath"
+	"path"
 
 	"github.com/karrick/godirwalk"
 	"golang.org/x/sync/errgroup"
@@ -82,11 +85,44 @@ func Walk(ctx context.Context, config *Config, results chan string, ignore_dir_e
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	completeIncludeList := config.ScanDirs.Include
+
 	var errors errgroup.Group
+
 	for i := range config.ScanDirs.Include {
 		j := i // copy loop variable
+		globPath := config.ScanDirs.Include[j]
+
+		if(string(globPath[len(globPath)-1:]) == "*"){
+			log.Printf("GLOBPATH: %s", globPath)
+			parent := filepath.Dir(globPath)
+			//log.Printf("PARENT: %s", parent)
+			//log.Printf("BASEGLOB: %s", path.Base(globPath))
+			//log.Printf("BASEGLOB2: %s", path.Base(globPath[0:len(globPath)-1]))
+			baseGlob := path.Base(globPath[0:len(globPath)-1])
+
+			entries, err := os.ReadDir(parent)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			for _, e := range entries {
+				if strings.HasPrefix(e.Name(), baseGlob) {
+					completeIncludeList = append(completeIncludeList, parent + "/" + e.Name())
+					//fmt.Println(e.Name())
+				}
+			}
+
+		}
+	}
+
+	//fmt.Printf("%v", completeIncludeList)
+	for i := range completeIncludeList {
+		j := i // copy loop variable
+		globPath := completeIncludeList[j]
+
 		errors.Go(func() error {
-			err := walkone(ctx, config.ScanDirs.Include[j], config, results)
+			err := walkone(ctx, globPath, config, results)
 			if err == filepath.SkipDir {
 				cancel()
 			} else if err != nil {
@@ -100,6 +136,7 @@ func Walk(ctx context.Context, config *Config, results chan string, ignore_dir_e
 			return nil
 		})
 	}
+
 	err := errors.Wait()
 	close(results)
 	return err
