@@ -78,7 +78,7 @@ func walkone(ctx context.Context, dir string, config *Config, results chan strin
 }
 
 // Walk finds all git repositories in the directories specified in config
-func Walk(ctx context.Context, config *Config, results chan string) error {
+func Walk(ctx context.Context, config *Config, results chan string, ignore_dir_errors bool) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
@@ -90,7 +90,12 @@ func Walk(ctx context.Context, config *Config, results chan string) error {
 			if err == filepath.SkipDir {
 				cancel()
 			} else if err != nil {
-				return err
+				if ignore_dir_errors {
+					log.Printf("ERROR: %s: %v", j, err)
+					return nil
+				} else {
+					return err
+				}
 			}
 			return nil
 		})

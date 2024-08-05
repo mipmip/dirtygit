@@ -26,13 +26,14 @@ type ui struct {
 	scan         chan struct{}
 	config       *scanner.Config
 	repositories scanner.MultiGitStatus
+	ignore_dir_errors bool
 
 	scanning     uint32
 	scanProgress int
 	err          error
 }
 
-func Run(config *scanner.Config) error {
+func Run(config *scanner.Config, ignore_dir_errors bool) error {
 	g, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
 		return err
@@ -44,6 +45,7 @@ func Run(config *scanner.Config) error {
 
 	u := &ui{}
 	u.config = config
+	u.ignore_dir_errors = ignore_dir_errors
 	u.scan = make(chan struct{}, 1)
 	go u.Run(g)
 
@@ -331,7 +333,7 @@ func (u *ui) Run(g *gocui.Gui) {
 		t := time.NewTicker(100 * time.Millisecond)
 		scanDone := make(chan struct{})
 		go func() {
-			u.repositories, u.err = scanner.Scan(u.config)
+			u.repositories, u.err = scanner.Scan(u.config, u.ignore_dir_errors)
 			if u.err == nil {
 				u.updateDirList(g)
 			}

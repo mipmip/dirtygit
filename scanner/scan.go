@@ -122,7 +122,7 @@ func GitStatus(d string) (git.Status, error) {
 }
 
 // Scan finds all "dirty" git repositories specified by config
-func Scan(config *Config) (MultiGitStatus, error) {
+func Scan(config *Config, ignore_dir_errors bool) (MultiGitStatus, error) {
 	ex, e := NewExcluder(config.GitIgnore.FileGlob, config.GitIgnore.DirGlob)
 	if e != nil {
 		return nil, e
@@ -138,7 +138,7 @@ func Scan(config *Config) (MultiGitStatus, error) {
 	ch := make(chan walkResult)
 	go func() {
 		start := time.Now()
-		err := Walk(ctx, config, repositories)
+		err := Walk(ctx, config, repositories, ignore_dir_errors)
 		ch <- walkResult{
 			err:      err,
 			duration: time.Since(start),

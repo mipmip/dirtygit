@@ -38,6 +38,11 @@ func main() {
 			Value:   getDefaultConfigPath(),
 		},
 		&cli.BoolFlag{
+			Name:  "ignore_dir_errors",
+			Aliases: []string{"i"},
+			Usage: "Don't halt on errors while finding dirs",
+		},
+		&cli.BoolFlag{
 			Name:  "debug",
 			Usage: "show debug output instead of UI",
 		},
@@ -59,7 +64,7 @@ func main() {
 
 		if c.Bool("debug") {
 			var mgs scanner.MultiGitStatus
-			mgs, err = scanner.Scan(config)
+			mgs, err = scanner.Scan(config, c.Bool("ignore_dir_errors"))
 			if err != nil {
 				panic(err)
 			}
@@ -70,12 +75,13 @@ func main() {
 			return nil
 		}
 
-		err = ui.Run(config)
+		err = ui.Run(config, c.Bool("ignore_dir_errors"))
 		if err != nil {
 			return err
 		}
 		return nil
 	}
+
 	err := app.Run(os.Args)
 	if err != nil {
 		fmt.Printf("%+v\n", err)
