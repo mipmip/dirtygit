@@ -53,7 +53,7 @@ make lint
 ## Future
 
 - Also scan for local changes which have not been pushed
-- Allow configuration of editor
+- [x] Allow configuration of editor
 - Improve error logging and presentation
 - Possibly show git diff
 - Allow deletion of files / repositories
@@ -74,3 +74,7 @@ make lint
 - [ ] output to json
 - [ ] deamon mode
 - [ ] menubar https://github.com/fyne-io/systray
+- [ ] add regex to exclude
+- [ ] if no starting slash, compare from right to left
+- [ ] help popup
+- [ ] enable global gitignore conf which is already visible in config
