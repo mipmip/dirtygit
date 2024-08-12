@@ -12,7 +12,7 @@ import (
 
 	"github.com/jroimartin/gocui"
 
-	"github.com/boyvinall/dirtygit/scanner"
+	"github.com/mipmip/dirtygit/scanner"
 )
 
 const (

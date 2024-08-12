@@ -9,8 +9,8 @@ import (
 	"github.com/mitchellh/go-homedir"
 	"github.com/urfave/cli/v2"
 
-	"github.com/boyvinall/dirtygit/scanner"
-	"github.com/boyvinall/dirtygit/ui"
+	"github.com/mipmip/dirtygit/scanner"
+	"github.com/mipmip/dirtygit/ui"
 )
 
 func getDefaultConfigPath() string {

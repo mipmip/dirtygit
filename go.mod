@@ -1,4 +1,4 @@
-module github.com/boyvinall/dirtygit
+module github.com/mipmip/dirtygit
 
 go 1.16
 
