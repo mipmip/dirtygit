@@ -1,5 +1,5 @@
 {
-  description = "Convert aws config and credential files into a single JSON object" ;
+  description = "Find dirty git repo's" ;
 
   inputs.nixpkgs.url = "nixpkgs/nixos-24.05";
 
@@ -20,7 +20,7 @@
           jsonify-aws-dotfiles = pkgs.callPackage ./package.nix {};
         });
 
-      defaultPackage = forAllSystems (system: self.packages.${system}.jsonify-aws-dotfiles);
+      defaultPackage = forAllSystems (system: self.packages.${system}.dirtygit);
 
       devShells = forAllSystems (system:
         let
