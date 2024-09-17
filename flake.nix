@@ -17,7 +17,7 @@
           pkgs = nixpkgsFor.${system};
         in
         {
-          jsonify-aws-dotfiles = pkgs.callPackage ./package.nix {};
+          dirtygit = pkgs.callPackage ./package.nix {};
         });
 
       defaultPackage = forAllSystems (system: self.packages.${system}.dirtygit);
