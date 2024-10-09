@@ -37,9 +37,11 @@ func main() {
 			Usage:   "Location of config file",
 			Value:   getDefaultConfigPath(),
 		},
+
 		&cli.BoolFlag{
 			Name:  "ignore_dir_errors",
 			Aliases: []string{"i"},
+			Value: true,
 			Usage: "Don't halt on errors while finding dirs",
 		},
 		&cli.BoolFlag{
@@ -48,18 +50,23 @@ func main() {
 		},
 	}
 	app.Action = func(c *cli.Context) error {
+
 		config, err := scanner.ParseConfigFile(c.String("config"), defaultConfig)
-		if err != nil {
-			return err
-		}
 		if c.Args().Len() > 0 {
+
+			fmt.Println("Arguments given, skipping config")
 			config.ScanDirs.Include = c.Args().Slice()
-		}
-		for i := range config.ScanDirs.Include {
-			config.ScanDirs.Include[i] = os.ExpandEnv(config.ScanDirs.Include[i])
-		}
-		for i := range config.ScanDirs.Exclude {
-			config.ScanDirs.Exclude[i] = os.ExpandEnv(config.ScanDirs.Exclude[i])
+
+		} else {
+			if err != nil {
+				return err
+			}
+			for i := range config.ScanDirs.Include {
+				config.ScanDirs.Include[i] = os.ExpandEnv(config.ScanDirs.Include[i])
+			}
+			for i := range config.ScanDirs.Exclude {
+				config.ScanDirs.Exclude[i] = os.ExpandEnv(config.ScanDirs.Exclude[i])
+			}
 		}
 
 		if c.Bool("debug") {
